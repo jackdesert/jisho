@@ -1,7 +1,4 @@
-require 'jisho/version'
-require 'jisho/misspellings'
-
-module Jisho
+class Jisho
   # Check text for misspelled words.
   #
   #   misspellings = Jisho.check 'Thiis sentence has a misspelled word.'
@@ -38,3 +35,5 @@ module Jisho
     misspellings
   end
 end
+
+require 'jisho/misspellings'
