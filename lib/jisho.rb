@@ -1,4 +1,11 @@
 class Jisho
+
+  # Overwrite this class variable in a config file in order to use different (or multiple) dictionaries
+  @dictionaries = 'en_US'
+  class << self
+    attr_accessor :dictionaries
+  end
+
   # Check text for misspelled words.
   #
   #   misspellings = Jisho.check 'Thiis sentence has a misspelled word.'
@@ -11,7 +18,7 @@ class Jisho
   def self.check(text)
     misspellings = Jisho::Misspellings.new
 
-    result = IO.popen "hunspell -d en_us", 'r+' do |io|
+    result = IO.popen "hunspell -d #{dictionaries}", 'r+' do |io|
       io.write text
       io.close_write
       io.read
@@ -34,6 +41,9 @@ class Jisho
 
     misspellings
   end
+
 end
+
+
 
 require 'jisho/misspellings'
