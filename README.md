@@ -48,6 +48,41 @@ Or install it yourself as:
 
     $ gem install jisho
 
+
+## Configuration
+
+You can set it to use whatever dictionaries you want.
+
+
+First check that the dictionaries you want to use
+are available to hunspell.
+
+    $ hunspell -D
+    AVAILABLE DICTIONARIES (path is not mandatory for -d option):
+    /usr/share/hunspell/en_US
+    /usr/share/hunspell/en_my_custom_dictionary
+
+
+Note when specifying a dictionary or list of dictionaries, the
+first one in the list must be a main dictionary. A main dictionary
+is one that also has an .aff file. List the contents of /usr/share/hunspell
+to make sure you have an .aff file for the first dictionary in your list:
+
+  $ ls /usr/share/hunspell
+    en_US.aff
+    en_US.dic
+    en_my_custom_dictionary.dic
+
+Here you can see that the "en_US" dictionary is a main dictionary
+because the .dic file has a corresponding .aff file.
+
+Now you can add this do a config file
+
+    # config/initializers/jisho.rb
+    Jisho.dictionaries = 'en_US,en_my_custom_dictionary'
+
+Make sure there are no spaces in between the dictionary names--just a comma.
+
 ## Contributing
 
 1. Fork it
