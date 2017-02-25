@@ -17,4 +17,35 @@ describe Jisho do
       expect( misspellings ).to be_empty
     end
   end
+
+  describe '.dictionaries' do
+    context 'fresh' do
+      it 'contains "en_US"' do
+        expect(Jisho.dictionaries).to eq('en_US')
+      end
+    end
+
+    context 'setting a new value' do
+      context 'when no spaces in new value' do
+        it 'accepts the setting' do
+          original = Jisho.dictionaries
+          value = 'Basque,MyCustom'
+          Jisho.dictionaries = value
+          expect(Jisho.dictionaries).to eq(value)
+
+          # set back to original so other tests will pass
+          Jisho.dictionaries = original
+        end
+      end
+
+      context 'when spaces in new value' do
+        it 'raises an exception' do
+          value = 'Basque, MyCustom'
+          expect{
+            Jisho.dictionaries = value
+          }.to raise_error(ArgumentError)
+        end
+      end
+    end
+  end
 end
