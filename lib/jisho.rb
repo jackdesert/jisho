@@ -2,6 +2,9 @@ require 'jisho/version'
 require 'jisho/misspellings'
 
 module Jisho
+
+  DICTIONARIES = 'en_US'
+
   # Check text for misspelled words.
   #
   #   misspellings = Jisho.check 'Thiis sentence has a misspelled word.'
@@ -14,7 +17,7 @@ module Jisho
   def self.check(text)
     misspellings = Jisho::Misspellings.new
 
-    result = IO.popen "hunspell -d en_us", 'r+' do |io|
+    result = IO.popen "hunspell -d #{DICTIONARIES}", 'r+' do |io|
       io.write text
       io.close_write
       io.read
