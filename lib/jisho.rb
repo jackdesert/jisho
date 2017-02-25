@@ -1,9 +1,18 @@
 class Jisho
 
+  SPACE = ' '
+
   # Overwrite this class variable in a config file in order to use different (or multiple) dictionaries
   @dictionaries = 'en_US'
   class << self
-    attr_accessor :dictionaries
+    attr_reader :dictionaries
+  end
+
+  def self.dictionaries=(value)
+    if value.include?(SPACE)
+      raise ArgumentError, 'Expected a comma-separated list with NO SPACES'
+    end
+    @dictionaries = value
   end
 
   # Check text for misspelled words.
