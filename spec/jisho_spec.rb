@@ -16,6 +16,22 @@ describe Jisho do
 
       expect( misspellings ).to be_empty
     end
+
+    context 'when dictionary is not found' do
+      before do
+        @original = Jisho.dictionaries
+        Jisho.dictionaries = 'never_heard_of_it'
+      end
+
+      after do
+        # set back to original so other tests will pass
+        Jisho.dictionaries = @original
+      end
+
+      it "raises an exception if it can't find dictionaries" do
+        expect { Jisho.check '' }.to raise_error Jisho::CaptureError
+      end
+    end
   end
 
   describe '.dictionaries' do

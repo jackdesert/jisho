@@ -1,6 +1,9 @@
 class Jisho
+  class CaptureError < Exception; end
+  require 'open3'
 
   SPACE = ' '
+  LINE_FEED = "\n"
 
   # Overwrite this class variable in a config file in order to use different (or multiple) dictionaries
   @dictionaries = 'en_US'
@@ -27,14 +30,15 @@ class Jisho
   def self.check(text)
     misspellings = Jisho::Misspellings.new
 
-    result = IO.popen "hunspell -d #{dictionaries}", 'r+' do |io|
-      io.write text
-      io.close_write
-      io.read
+    stdout_str, stderr_str, status = Open3.capture3("hunspell -d #{dictionaries}", stdin_data: text)
+
+    if !status.success?
+      # If there is an error, STDERR gets written to "result"
+      raise CaptureError, stderr_str
     end
 
     row = 1
-    result.lines do |line|
+    stdout_str.split(LINE_FEED).each do |line|
       case line
       when ''
         row += 1
