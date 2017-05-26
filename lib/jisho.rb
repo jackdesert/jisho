@@ -33,7 +33,6 @@ class Jisho
     stdout_str, stderr_str, status = Open3.capture3("hunspell -d #{dictionaries}", stdin_data: text)
 
     if !status.success?
-      # If there is an error, STDERR gets written to "result"
       raise CaptureError, stderr_str
     end
 
